@@ -374,7 +374,7 @@ class Download(object):
             # Creat OutputDir
             targetDir = self.__creatAlbumDir(aAlbumInfo)
             # download cover
-            coverPath = targetDir + '/' + pathHelper.replaceLimitChar(aAlbumInfo['title'], '-') + '.jpg'
+            coverPath = aAlbumInfo['artist']['name'] + " - " + aTrackInfo['title'] + '.jpg'
             if aAlbumInfo['cover'] is not None:
                 coverUrl = self.tool.getAlbumArtworkUrl(aAlbumInfo['cover'])
                 netHelper.downloadFile(coverUrl, coverPath)
@@ -386,7 +386,7 @@ class Download(object):
                 continue
 
             fileType = self._getSongExtension(streamInfo['url'])
-            filePath = self.__getAlbumSongSavePath(targetDir, aAlbumInfo, aTrackInfo, fileType)
+            filePath = aAlbumInfo['artist']['name'] + " - " + aTrackInfo['title'] + fileType
             paraList = {'album': aAlbumInfo,
                         'title': aTrackInfo['title'],
                         'trackinfo': aTrackInfo,
