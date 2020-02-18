@@ -239,8 +239,6 @@ class TidalTool(object):
 
     def getTrack(self, track_id):
         item = self._get('tracks/' + str(track_id))
-        if item['version'] is not None:
-            item['title'] += ' - ' + item['version']
         return item
 
     def getAlbum(self, album_id):
