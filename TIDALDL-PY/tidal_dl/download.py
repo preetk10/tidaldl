@@ -340,7 +340,7 @@ class Download(object):
  
 
 
-    def downloadTrack(self, track_id=None):
+    def downloadTrack(self, track_id=None, kalite=1):
         while_count = 9999
         while while_count > 0:
             while_count -= 1
@@ -380,7 +380,7 @@ class Download(object):
                 netHelper.downloadFile(coverUrl, coverPath)
 
             # download
-            streamInfo = self.tool.getStreamUrl(sID, self.config.quality)
+            streamInfo = self.tool.getStreamUrl(sID, kalite)
             if self.tool.errmsg != "":
                 printErr(14, aTrackInfo['title'] + "(Get Stream Url Err!" + self.tool.errmsg + ")")
                 continue
