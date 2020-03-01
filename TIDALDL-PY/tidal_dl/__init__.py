@@ -11,7 +11,7 @@ from tidal_dl.tidal import TidalAccount
 from tidal_dl.download import Download
 from tidal_dl.printhelper import printMenu, printChoice2, printErr, printWarring, LOG
 
-TIDAL_DL_VERSION = "2020.2.14.0"
+TIDAL_DL_VERSION = "2020.2.28.1"
 
 
 def logIn(username="", password=""):
@@ -46,10 +46,11 @@ def showConfig():
     print("Only M4a                         : " + cf.onlym4a)
     print("Show download progress           : " + cf.showprogress + "(enable when threadnum=1)")
     print("Use hyphens                      : " + cf.addhyphen + "(between number and title)")
-    print("Add year                         : " + cf.addyear + "(before album title)")
+    print("Add year                         : " + cf.addyear + "(in album title)")
     print("Add explicit tag                 : " + cf.addexplicit)
     print("Playlist songs in artist folders : " + cf.plfile2arfolder + "(organized with artist folder)")
     print("Include singles                  : " + cf.includesingle + "(download artist album)")
+    print("Save covers                      : " + cf.savephoto)
     print("Version                          : " + TIDAL_DL_VERSION)
     myinput("Enter to return.")
 
@@ -64,10 +65,11 @@ def setting():
     print("Only M4a                         :\t" + cf.onlym4a)
     print("Show download progress           :\t" + cf.showprogress + "(enable when threadnum=1)")
     print("Use hyphens                      :\t" + cf.addhyphen + "(between number and title)")
-    print("Add year                         :\t" + cf.addyear + "(before album title)")
+    print("Add year                         :\t" + cf.addyear + "(in album title)")
     print("Add explicit tag                 :\t" + cf.addexplicit)
     print("Playlist songs in artist folders :\t" + cf.plfile2arfolder + "(organized with artist folder)")
     print("Include singles                  :\t" + cf.includesingle + "(download artist album)")
+    print("Save covers                      : " + cf.savephoto)
     while True:
         outputdir = myinput("Output directory(Enter '0' Unchanged):".ljust(12))
         if outputdir == '0':
@@ -113,13 +115,28 @@ def setting():
             printErr(0, "ThreadNum Err")
             continue
         break
+
     status = myinputInt("Convert Mp4 to M4a(0-No, 1-Yes):".ljust(12), 0)
     status2 = myinputInt("Show download progress (only available on single thread)(0-No, 1-Yes):".ljust(12), 0)
     status3 = myinputInt("Use hyphens instead of spaces in file names(0-No, 1-Yes):".ljust(12), 0)
-    status4 = myinputInt("Add year to file names(0-No, 1-Yes):".ljust(12), 0)
+
+    while True:
+        index = myinputInt("Add year to album folder names(0-No, 1-Before, 2-After):".ljust(12), 99)
+        if index > 2 or index < 0:
+            printErr(0, "Addyear input Err")
+            continue
+        if index == 0:
+            addyear = 'No'
+        if index == 1:
+            addyear = 'Before'
+        if index == 2:
+            addyear = 'After'
+        break
+
     status5 = myinputInt("Download playlist songs in artist folder structure? (0-No,1-Yes):".ljust(12), 0)
     status6 = myinputInt("Add explicit tag to file names(0-No, 1-Yes):".ljust(12), 0)
     status7 = myinputInt("Download artist album include singles(0-No, 1-Yes):".ljust(12), 0)
+    status8 = myinputInt("Save covers(0-No, 1-Yes):".ljust(12), 0)
 
     cf.set_outputdir(outputdir)
     cf.set_quality(quality)
@@ -128,10 +145,11 @@ def setting():
     cf.set_onlym4a(status)
     cf.set_showprogress(status2)
     cf.set_addhyphen(status3)
-    cf.set_addyear(status4)
+    cf.set_addyear(addyear)
     cf.set_plfile2arfolder(status5)
     cf.set_addexplicit(status6)
     cf.set_includesingle(status7)
+    cf.set_savephoto(status8)
 
     pathHelper.mkdirs(outputdir + "/Album/")
     pathHelper.mkdirs(outputdir + "/Playlist/")
@@ -157,10 +175,11 @@ def main(argv=None):
     print("Only M4a                         : " + cf.onlym4a)
     print("Show download progress           : " + cf.showprogress + "(enable when threadnum=1)")
     print("Use hyphens                      : " + cf.addhyphen + "(between number and title)")
-    print("Add year                         : " + cf.addyear + "(before album title)")
+    print("Add year                         : " + cf.addyear + "(in album title)")
     print("Add explicit tag                 : " + cf.addexplicit)
     print("Playlist songs in artist folders : " + cf.plfile2arfolder + "(organized with artist folder)")
     print("Include singles                  : " + cf.includesingle + "(download artist album)")
+    print("Save covers                      : " + cf.savephoto)
     print("Current Version                  : " + TIDAL_DL_VERSION)
     if onlineVer != None:
         print("Latest Version                   : " + onlineVer)
@@ -219,7 +238,7 @@ def debug():
     # ss = dl.tool.getPlaylistArtworkUrl("36ea71a8-445e-41a4-82ab-6628c581535d")
     # ss = dl.tool.getPlaylistArtworkUrl("36ea71a8-445e-41a4-82ab-6628c581535d",480)
     # dl.downloadVideo(57261945) #1hours
-
+    # tidal.com/browse/track/125155002 dubi
     dl.downloadVideo(84094460)
 
 # if __name__ == '__main__':
