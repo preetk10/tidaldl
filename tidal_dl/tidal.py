@@ -448,7 +448,7 @@ class TidalAccount(object):
             'clientUniqueKey': self.uuid,
             'clientVersion': VERSION,
         }
-        re = requests.post(URL_PRE + 'login/username', data=postParams).json()
+        re = requests.post(URL_PRE + 'login/username?token=' + self.token, data=postParams).json()
         if 'status' in re:
             if re['status'] == 401:
                 self.errmsg = "Username or password err!"
